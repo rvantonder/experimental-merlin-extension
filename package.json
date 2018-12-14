@@ -1,0 +1,27 @@
+{
+  "name": "ocaml-merlin",
+  "publisher": "rvt",
+  "title": "EXPERIMENTAL: OCaml merlin support",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rvantonder/experimental-merlin-extension.git"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "main": "dist/extension.js",
+  "scripts": {
+    "sourcegraph:prepublish": "parcel build src/extension.ts"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.10.0",
+    "sourcegraph": "^16.0.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@sourcegraph/prettierrc": "^2.2.0",
+    "rxjs": "^6.3.2",
+    "vscode-ws-jsonrpc": "^0.0.1-alpha.5"
+  }
+}
