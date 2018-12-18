@@ -1,7 +1,7 @@
 {
-  "name": "ocaml-merlin",
-  "publisher": "rvt",
-  "title": "EXPERIMENTAL: OCaml merlin support",
+  "name": "ocaml-merlin-test",
+  "publisher": "rvantonder",
+  "title": "WIP: experimental OCaml merlin support",
   "description": "",
   "repository": {
     "type": "git",

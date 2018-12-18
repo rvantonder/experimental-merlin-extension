@@ -10,7 +10,7 @@ type Settings = Partial<FullSettings>
 export function activate(): void {
     function afterActivate() {
         // const address = sourcegraph.configuration.get<Settings>().get('endpoint')
-        const address = 'http://81e265af.ngrok.io'
+        const address = 'https://smee.io/cnUvUrtWnGe8KH1e'
         if (!address) {
             console.log('No endpoint.')
             return
@@ -19,7 +19,8 @@ export function activate(): void {
         const docSelector = [{ pattern: '*.{ml, mli}' }]
 
         sourcegraph.languages.registerHoverProvider(docSelector, {
-            provideHover: async (doc, pos) => {
+            provideHover: async (doc, unaligned_pos) => {
+                const pos = { line : unaligned_pos.line + 1, character : unaligned_pos.character }
                 return ajax({
                     method: 'POST',
                     url: address,
@@ -43,9 +44,10 @@ export function activate(): void {
                     })
             },
         })
-
+        
         sourcegraph.languages.registerDefinitionProvider(docSelector, {
-            provideDefinition: async (doc, pos) => {
+            provideDefinition: async (doc, unaligned_pos) => {
+                const pos = { line : unaligned_pos.line + 1, character : unaligned_pos.character }
                 return ajax({
                     method: 'POST',
                     url: address,
@@ -61,15 +63,16 @@ export function activate(): void {
                             response &&
                             response.response &&
                             new sourcegraph.Location(
+                                //new sourcegraph.URI(response.response.uri), // says *buffer* heh
                                 new sourcegraph.URI(doc.uri),
                                 new sourcegraph.Range(
                                     new sourcegraph.Position(
-                                        response.response.start.line,
-                                        response.response.start.character
+                                        response.response.range.start.line,
+                                        response.response.range.start.character
                                     ),
                                     new sourcegraph.Position(
-                                        response.response.end.line,
-                                        response.response.end.character
+                                        response.response.range.end.line,
+                                        response.response.range.end.character
                                     )
                                 )
                             )
@@ -77,6 +80,7 @@ export function activate(): void {
                     })
             },
         })
+        
     }
     // Error creating extension host: Error: Configuration is not yet available.
     // `sourcegraph.configuration.get` is not usable until after the extension
